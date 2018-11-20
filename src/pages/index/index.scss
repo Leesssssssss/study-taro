@@ -1,0 +1,38 @@
+// .bcg {
+//   position: relative;
+//   width: 100%;
+//   height: 0px;
+//   padding-top: 100%;
+// .bcgGrid {
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   width: 100%;
+//   height: 100%;
+//   background: linear-gradient(90deg, rgba(200, 0, 0, .5) 50%, transparent 0), 
+//   linear-gradient(rgba(200, 0, 0, .5) 50%, transparent 0);
+//   background-size: 20.5%;
+// }
+// }
+// .grid {
+//   display: grid;
+//   border: 1px dashed gray;
+//   grid-template-columns: 200px 1fr 1fr;
+// }
+
+.index {
+  display: flex;
+  .starBox {
+    position: relative;
+    width: 10%;
+    height: 0px;
+    padding-top: 10%;
+    Image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
