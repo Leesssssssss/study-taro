@@ -1,0 +1,19 @@
+@font-face {font-family: "iconfont";
+  src: url('./assets/fonts/iconfont.eot?t=1542796304041'); /* IE9*/
+  src: url('./assets/fonts/iconfont.eot?t=1542796304041#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('./assets/fonts/iconfont.ttf?t=1542796304041') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('./assets/fonts/iconfont.svg?t=1542796304041#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.icon {
+  font-family:"iconfont" !important;
+  font-size:16px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-book:before { content: "\e871"; }
+
+.icon-bookStore:before { content: "\e607"; }
+

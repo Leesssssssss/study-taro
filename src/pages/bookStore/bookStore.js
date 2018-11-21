@@ -1,13 +1,13 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import './index.scss'
+import './bookStore.scss'
 import { AtTabBar } from 'taro-ui'
 
 
 export default class Index extends Component {
 
   config = {
-    navigationBarTitleText: '书架'
+    navigationBarTitleText: '书城'
   }
 
   componentWillMount() {
