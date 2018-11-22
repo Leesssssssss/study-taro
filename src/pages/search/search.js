@@ -33,10 +33,10 @@ export default class Index extends Component {
     Taro.request({
       url: 'http://novel.juhe.im/search?keyword=' + e.target.value
     })
-      .then(res => 
-        this.state.books = res.data.books,
-        console.log(this.state.books)
-        )
+      .then(res => {
+        this.state.books = res.data.books;
+        console.log(this.state.books);
+      })
   }
 
   render() {

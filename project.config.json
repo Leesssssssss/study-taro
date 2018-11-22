@@ -2,9 +2,9 @@
 	"miniprogramRoot": "./dist",
 	"projectname": "taroStar",
 	"description": "",
-	"appid": "touristappid",
+	"appid": "wxb856601fa3c29969",
 	"setting": {
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": false,
 		"postcss": false,
 		"minified": false,

@@ -22,7 +22,9 @@ class App extends Component {
     },
     tabBar: {
       color: '#888888',
-      selectedColor: '	#6190E8',
+      selectedColor: '#6190E8',
+      backgroundColor: '#ffffff',
+      borderStyle: 'white',
       list: [
         {
           pagePath: 'pages/index/index',

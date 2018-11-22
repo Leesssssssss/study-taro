@@ -1,7 +1,8 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import './index.scss'
-import { AtTabBar } from 'taro-ui'
+import amapFile from '../../libs/amap-wx.js'
+import { Map } from '@tarojs/components'
 
 
 export default class Index extends Component {
@@ -10,61 +11,57 @@ export default class Index extends Component {
     navigationBarTitleText: '书架'
   }
 
-  componentWillMount() {
-    // console.log(1);
-    // Taro.request({
-    //   url: 'http://novel.juhe.im/categories'
-    // })
-    //   .then(res => console.log(res.data))
-  }
-
-  componentDidMount() {
-    // console.log(2);
-  }
-
-  componentWillUnmount() {
-    // console.log(3);
-  }
-
-  componentDidShow() {
-    // console.log(4);
-  }
-
-  componentDidHide() {
-    // console.log(5);
-  }
-
-  constructor() {
-    super(...arguments)
-    this.state = {
-      current: 0
+  constructor (props) {
+    super(props)
+    this.state = { 
+      markers: []
     }
   }
-  handleClick(value) {
-    this.setState({
-      current: value
+
+  componentWillMount() {
+    var that = this
+    var myAmapFun = new amapFile.AMapWX({key:'393f59f1c7dfbba3e801288e1d455d28'})
+    myAmapFun.getPoiAround({
+      success: function(data){
+        //成功回调
+        console.log(data);
+        that.setState({
+          markers: data.markers
+        })
+      },
+      fail: function(info){
+        //失败回调
+        console.log(info)
+      }
     })
-    Taro.navigateTo({
-      url: '../bookStore/bookStore.js'
-    })
+
+    // Taro.getLocation(params).then(
+    //   success: function( res ) {
+    //     console.log( res )
+    //     that.setData( {
+    //       hasLocation: true,
+    //       location: {
+    //         longitude: res.longitude,
+    //         latitude: res.latitude
+    //       }
+    //     })
+    //   }
+    // )
   }
+
+  componentDidMount() {}
+
+  componentWillUnmount() {}
+
+  componentDidShow() {}
+
+  componentDidHide() {}
+
+  onTap () {}
 
   render() {
     return (
-      <View>
-        {/* <AtTabBar
-          color='#888888'
-          fixed
-          tabList={[
-            { title: '书架', iconPrefixClass: 'icon', iconType: 'book' },
-            { title: '书城', iconPrefixClass: 'icon', iconType: 'bookStore' },
-            { title: '搜索', iconType: 'search' },
-            { title: '我的', iconType: 'user' }
-          ]}
-          onClick={this.handleClick.bind(this)}
-          current={this.state.current}
-        /> */}
-      </View>
+      <Map className='map' markers={this.state.markers} onClick={this.onTap} />
     )
   }
 }
