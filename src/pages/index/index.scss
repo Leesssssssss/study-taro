@@ -1,4 +1,41 @@
-.map {
+.bgImg {
+  position: absolute;
+  top: 0;
   width: 100%;
   height: 100vh;
+  z-index: -1000;
 }
+
+.mask {
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.37);
+  z-index: -500;
+}
+
+.icons {
+  margin-top: 50px;
+  display: flex;
+  .iconsItem {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #d7d6d4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 20px;
+  }
+}
+
+.addBtn {
+  background-color: #ffd901;
+  width: 90%;
+  color: #ffffff;
+  font-weight: 700;
+  margin-top: 40vh;
+}
+
+button::after{ border: none; }
