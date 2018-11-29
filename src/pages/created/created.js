@@ -16,7 +16,8 @@ export default class Created extends Component {
     dateSel: (new Date()).getFullYear() + '-' + ((new Date()).getMonth() + 1) + '-' + (new Date()).getDate(),
     selector: ['不重复', '每年', '每月', '每周'],
     selectorChecked: '不重复',
-    day: 0
+    day: 0,
+    top: true
   }
 
   componentWillMount() {
@@ -62,6 +63,14 @@ export default class Created extends Component {
     })
   }
 
+  save() {
+    console.log(this.state.inputValue);
+    console.log(this.state.dateSel);
+    console.log(this.state.selectorChecked);
+    console.log(this.state.top);
+    console.log(this.state.day);
+  }
+
   render() {
     return (
       <View>
@@ -74,7 +83,7 @@ export default class Created extends Component {
 
         <View className='titleBox'>
           <Text className='title'>创建新备忘录</Text>
-          <Button className='saveBtn'>保存</Button>
+          <Button className='saveBtn' onClick={this.save}>保存</Button>
         </View>
 
         <View className='inputBox'>

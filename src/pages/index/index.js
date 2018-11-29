@@ -20,6 +20,7 @@ export default class Index extends Component {
   // }
 
   componentWillMount() {
+
   }
 
   componentDidMount() { }
@@ -31,17 +32,31 @@ export default class Index extends Component {
   componentDidHide() { }
 
   toCreated() {
-    Taro.navigateTo({
-      url: '/pages/created/created'
+    Taro.getSetting({
+      success(res) {
+        if (res.authSetting['scope.userInfo']) {
+          // 已经授权，可以直接调用 getUserInfo 获取头像昵称
+          Taro.getUserInfo({
+            success: function (res) {
+              console.log(res.userInfo)
+              Taro.navigateTo({
+                url: '/pages/created/created'
+              })
+            }
+          })
+        }
+      }
     })
+
   }
+
 
   render() {
     return (
       <View>
         <Image className='bgImg' src={bgImg} />
         <View className='mask'></View>
-        
+
         <View className='icons'>
           <View className='iconsItem' onClick={this.toCreated}>
             <AtIcon prefixClass='icon' value='add' size='20' color='#4e3a4b'></AtIcon>
@@ -54,7 +69,7 @@ export default class Index extends Component {
           </View>
         </View>
 
-        <Button className='addBtn' onClick={this.toCreated}>点击创建你的第一条备忘录</Button>
+        <Button className='addBtn' open-type="getUserInfo" onClick={this.toCreated}>点击创建你的第一条备忘录</Button>
       </View>
     )
   }
