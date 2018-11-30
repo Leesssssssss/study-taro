@@ -31,23 +31,39 @@ export default class Index extends Component {
 
   componentDidHide() { }
 
-  toCreated() {
-    Taro.getSetting({
+  toCreated(e) {
+    console.log(e.detail.userInfo);
+    if (!e.detail.userInfo) {
+      return;
+    }
+    Taro.login({
       success(res) {
-        if (res.authSetting['scope.userInfo']) {
-          // 已经授权，可以直接调用 getUserInfo 获取头像昵称
-          Taro.getUserInfo({
-            success: function (res) {
-              console.log(res.userInfo)
-              Taro.navigateTo({
-                url: '/pages/created/created'
-              })
-            }
+        if (res.code) {
+          //发起网络请求
+          const appId = 'wxb856601fa3c29969'
+          const secret = '98ac0657532a3cc8da45676aa4c94bbb'
+          const code = res.code
+          Taro.request({
+            url: 'https://api.weixin.qq.com/sns/jscode2session?appid='+ appId +'&secret='+ secret +'&js_code='+ code +'&grant_type=authorization_code'
+          }).then(res => {
+            Taro.request({
+              url: 'http://localhost:3000/getUserInfo',
+              method: 'POST',
+              data: {
+                openid: res.data.openid,
+                session_key: res.data.session_key,
+                userInfo: e.detail.userInfo
+              }
+            })
           })
+        } else {
+          console.log('登录失败！' + res.errMsg)
         }
       }
     })
-
+    Taro.navigateTo({
+      url: '/pages/created/created'
+    })
   }
 
 
@@ -69,7 +85,7 @@ export default class Index extends Component {
           </View>
         </View>
 
-        <Button className='addBtn' open-type="getUserInfo" onClick={this.toCreated}>点击创建你的第一条备忘录</Button>
+        <Button className='addBtn' open-type="getUserInfo" onGetUserInfo={this.toCreated}>点击创建你的第一条备忘录</Button>
       </View>
     )
   }

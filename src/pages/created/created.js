@@ -17,7 +17,7 @@ export default class Created extends Component {
     selector: ['不重复', '每年', '每月', '每周'],
     selectorChecked: '不重复',
     day: 0,
-    top: true
+    top: false
   }
 
   componentWillMount() {
@@ -63,6 +63,13 @@ export default class Created extends Component {
     })
   }
 
+  changeChoose() {
+    this.setState({
+      top: !this.state.top
+    })
+    console.log(this.state.top);
+  }
+
   save() {
     console.log(this.state.inputValue);
     console.log(this.state.dateSel);
@@ -72,6 +79,20 @@ export default class Created extends Component {
   }
 
   render() {
+    let isChoose = null;
+    if (top === true) {
+      isChoose = (
+        <View className='choose'>
+          <AtIcon prefixClass='icon' value='isChooseTrue' size='23' color='#fad300'></AtIcon>
+        </View>
+      )
+    } else {
+      isChoose = (
+        <View className='choose'>
+          <AtIcon prefixClass='icon' value='isChooseFalse' size='23' color='#101010'></AtIcon>
+        </View>
+      )
+    }
     return (
       <View>
         <Image className='bgImg' src={bgImg} />
@@ -110,8 +131,8 @@ export default class Created extends Component {
         </View>
 
         <View className='top'>
-          <View className='choose'>
-            <AtIcon className='isChoose' prefixClass='icon' value='circle' size='14' color='#fad300'></AtIcon>
+          <View className='choose' onClick={this.changeChoose}>
+            {isChoose}
           </View>
           <Text className='title'>置顶</Text>
         </View>
