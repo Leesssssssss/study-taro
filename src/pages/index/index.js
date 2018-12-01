@@ -44,15 +44,20 @@ export default class Index extends Component {
           const secret = '98ac0657532a3cc8da45676aa4c94bbb'
           const code = res.code
           Taro.request({
-            url: 'https://api.weixin.qq.com/sns/jscode2session?appid='+ appId +'&secret='+ secret +'&js_code='+ code +'&grant_type=authorization_code'
-          }).then(res => {
+            url: 'https://api.weixin.qq.com/sns/jscode2session?appid=' + appId + '&secret=' + secret + '&js_code=' + code + '&grant_type=authorization_code'
+          }).then(result => {
             Taro.request({
               url: 'http://localhost:3000/getUserInfo',
               method: 'POST',
               data: {
-                openid: res.data.openid,
-                session_key: res.data.session_key,
+                openid: result.data.openid,
+                session_key: result.data.session_key,
                 userInfo: e.detail.userInfo
+              }
+            }).then(results => {
+              if (results.data === 'ok') {
+                Taro.setStorage({ key: 'openid', data: result.data.openid })
+                  .then(res => console.log(res))
               }
             })
           })

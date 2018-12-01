@@ -17,10 +17,15 @@ export default class Created extends Component {
     selector: ['不重复', '每年', '每月', '每周'],
     selectorChecked: '不重复',
     day: 0,
-    top: false
+    top: true,
+    openid: ''
   }
 
   componentWillMount() {
+    Taro.getStorage({ key: 'openid' })
+      .then(res =>
+        this.state.openid = res.data
+      )
   }
 
   componentDidMount() { }
@@ -67,15 +72,30 @@ export default class Created extends Component {
     this.setState({
       top: !this.state.top
     })
-    console.log(this.state.top);
   }
 
   save() {
-    console.log(this.state.inputValue);
-    console.log(this.state.dateSel);
-    console.log(this.state.selectorChecked);
-    console.log(this.state.top);
-    console.log(this.state.day);
+    if (this.state.inputValue === '备忘录名称') {
+      Taro.showToast({
+        title: '请输入备忘录名称！',
+        image: '../../assets/image/reminder.png',
+        duration: 2000
+      })
+    } else {
+      var note = {
+        title: this.state.inputValue,
+        date: this.state.dateSel,
+        repeat: this.state.selectorChecked,
+        top: this.state.top,
+        day: this.state.day,
+        openid: this.state.openid
+      }
+      Taro.request({
+        url: 'http://localhost:3000/addNote',
+        method: 'POST',
+        data: note
+      })
+    }
   }
 
   render() {
@@ -83,13 +103,13 @@ export default class Created extends Component {
     if (top === true) {
       isChoose = (
         <View className='choose'>
-          <AtIcon prefixClass='icon' value='isChooseTrue' size='23' color='#fad300'></AtIcon>
+          <AtIcon value='check-circle' size='25' color='#fad300'></AtIcon>
         </View>
       )
     } else {
       isChoose = (
         <View className='choose'>
-          <AtIcon prefixClass='icon' value='isChooseFalse' size='23' color='#101010'></AtIcon>
+          <AtIcon value='check-circle' size='25' color='#b4b7ba'></AtIcon>
         </View>
       )
     }
