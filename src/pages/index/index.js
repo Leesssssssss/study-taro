@@ -10,17 +10,52 @@ export default class Index extends Component {
     // navigationBarTitleText: '首页'
   }
 
-  // constructor(props) {
-  //   super(props)
-  //   this.state = {
-  //     markers: [],
-  //     longitude: 0,
-  //     latitude: 0
-  //   }
-  // }
+  state = {
+    openid: '',
+    userInfo: {},
+    notes: []
+  }
 
   componentWillMount() {
+    var that = this
+    Taro.login({
+      success(res) {
+        if (res.code) {
+          //小程序登录获取用户openid
+          const appId = 'wxb856601fa3c29969'
+          const secret = '98ac0657532a3cc8da45676aa4c94bbb'
+          const code = res.code
+          Taro.request({
+            url: 'https://api.weixin.qq.com/sns/jscode2session?appid=' + appId + '&secret=' + secret + '&js_code=' + code + '&grant_type=authorization_code'
+          }).then(result => {
+            Taro.request({
+              url: 'http://localhost:3000/getOpenId',
+              method: 'POST',
+              data: {
+                openid: result.data.openid,
+                session_key: result.data.session_key
+              }
+            })
 
+            // 根据获取的openid获取用户备忘录
+            Taro.request({
+              url: 'http://localhost:3000/getNote',
+              method: 'POST',
+              data: {
+                openid: result.data.openid
+              }
+            }).then(results => {
+              that.setState({ notes: results.data })
+              console.log(results.data);
+            })
+            that.setState({ openid: result.data.openid })
+            Taro.setStorage({ key: 'openid', data: result.data.openid })
+          })
+        } else {
+          console.log('登录失败！' + res.errMsg)
+        }
+      }
+    })
   }
 
   componentDidMount() { }
@@ -31,41 +66,32 @@ export default class Index extends Component {
 
   componentDidHide() { }
 
-  toCreated(e) {
-    console.log(e.detail.userInfo);
-    if (!e.detail.userInfo) {
-      return;
-    }
-    Taro.login({
-      success(res) {
-        if (res.code) {
-          //发起网络请求
-          const appId = 'wxb856601fa3c29969'
-          const secret = '98ac0657532a3cc8da45676aa4c94bbb'
-          const code = res.code
-          Taro.request({
-            url: 'https://api.weixin.qq.com/sns/jscode2session?appid=' + appId + '&secret=' + secret + '&js_code=' + code + '&grant_type=authorization_code'
-          }).then(result => {
-            Taro.request({
-              url: 'http://localhost:3000/getUserInfo',
-              method: 'POST',
-              data: {
-                openid: result.data.openid,
-                session_key: result.data.session_key,
-                userInfo: e.detail.userInfo
-              }
-            }).then(results => {
-              if (results.data === 'ok') {
-                Taro.setStorage({ key: 'openid', data: result.data.openid })
-                  .then(res => console.log(res))
-              }
-            })
-          })
-        } else {
-          console.log('登录失败！' + res.errMsg)
-        }
+
+  toCreated() {
+    var that = this
+    Taro.getUserInfo({
+      success: function(res) {
+        that.setState({
+          userInfo: res.userInfo
+        })
       }
     })
+
+    if (!this.state.userInfo) {
+      return;
+    }
+
+    // 存储获取的用户信息
+    Taro.request({
+      url: 'http://localhost:3000/getUserInfo',
+      method: 'POST',
+      data: {
+        openid: this.state.openid,
+        userInfo: this.state.userInfo
+      }
+    })
+
+    // 跳转至新建备忘录页面
     Taro.navigateTo({
       url: '/pages/created/created'
     })
@@ -73,6 +99,36 @@ export default class Index extends Component {
 
 
   render() {
+    let noteInfo = null
+    const { notes } = this.state
+
+    const card = (
+      <View>
+        {notes.map((note) =>
+          <View className='watchBox'>
+            <View className='watchBoxItem'>
+              <Text className='name'>{note.title}</Text>
+              <Text className='date'>{note.date}</Text>
+            </View>
+            <View className='watchBoxItem'>
+              <Text className='day'>{note.day}</Text>
+            </View>
+          </View>
+        )}
+      </View>
+    )
+
+    if (notes.length === 0) {
+      noteInfo = (
+        <Button className='addBtn' open-type="getUserInfo" onClick={this.toCreated}>点击创建你的第一条备忘录</Button>
+      )
+    } else {
+      noteInfo = (
+        <View>
+          {card}
+        </View>
+      )
+    }
     return (
       <View>
         <Image className='bgImg' src={bgImg} />
@@ -90,7 +146,7 @@ export default class Index extends Component {
           </View>
         </View>
 
-        <Button className='addBtn' open-type="getUserInfo" onGetUserInfo={this.toCreated}>点击创建你的第一条备忘录</Button>
+        {noteInfo}
       </View>
     )
   }

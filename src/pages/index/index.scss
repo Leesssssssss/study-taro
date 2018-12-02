@@ -38,4 +38,38 @@
   margin-top: 40vh;
 }
 
-button::after{ border: none; }
+.watchBox {
+  margin: 0 2%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(228, 225, 225, 0.836);
+  width: 96%;
+  height: 12vh;
+  border-radius: 20px;
+  .watchBoxItem {
+    display: flex;
+    flex-direction: column;
+    margin: 0 50px 0 30px;
+    .name {
+      font-size: 38px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .date {
+      color: #646462;
+      font-size: 31px;
+      font-weight: 700;
+    }
+    .day {
+      color: #008e9d;
+      font-size: 80px;
+      font-weight: 700;
+      font-style: italic;
+    }
+  }
+}
+
+button::after {
+  border: none;
+}

@@ -22,6 +22,7 @@ export default class Created extends Component {
   }
 
   componentWillMount() {
+    // 获取本地存储openid
     Taro.getStorage({ key: 'openid' })
       .then(res =>
         this.state.openid = res.data
@@ -36,12 +37,14 @@ export default class Created extends Component {
 
   componentDidHide() { }
 
+  // 返回上一页
   back() {
     Taro.navigateBack({
       delta: 1
     })
   }
 
+  // 设置日期以及计算天数
   onDateChange = e => {
     this.setState({
       dateSel: e.detail.value
@@ -56,6 +59,7 @@ export default class Created extends Component {
     })
   }
 
+  // 设置重复
   onChange = e => {
     this.setState({
       selectorChecked: this.state.selector[e.detail.value]
@@ -68,12 +72,14 @@ export default class Created extends Component {
     })
   }
 
+  // 设置是否置顶
   changeChoose() {
     this.setState({
       top: !this.state.top
     })
   }
 
+  // 存储输入的信息
   save() {
     if (this.state.inputValue === '备忘录名称') {
       Taro.showToast({
@@ -94,6 +100,13 @@ export default class Created extends Component {
         url: 'http://localhost:3000/addNote',
         method: 'POST',
         data: note
+      }).then(res => {
+        console.log(res.data);
+
+        // 跳转至主页
+        Taro.navigateTo({
+          url: '/pages/index/index'
+        })
       })
     }
   }
