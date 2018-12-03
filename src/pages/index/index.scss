@@ -38,34 +38,73 @@
   margin-top: 40vh;
 }
 
-.watchBox {
-  margin: 0 2%;
+.topNote {
+  width: 100%;
+  height: 30vh;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  background-color: rgba(228, 225, 225, 0.836);
-  width: 96%;
-  height: 12vh;
-  border-radius: 20px;
-  .watchBoxItem {
+  flex-direction: column;
+  .topNoteDay {
+    color: #ffffff;
+    font-size: 130px;
+    font-style: italic;
+    font-weight: 700;
+  }
+  .topNoteTitle {
+    color: #ffffff;
+    font-size: 38px;
+    font-weight: 700;
+  }
+  .topNoteItem {
     display: flex;
-    flex-direction: column;
-    margin: 0 50px 0 30px;
-    .name {
-      font-size: 38px;
-      font-weight: 700;
-      margin-bottom: 10px;
+    align-items: center;
+    margin-top: 20px;
+    .topNoteTOP {
+      background-color: #ffffff;
+      font-size: 23px;
+      border-radius: 10px;
+      padding: 0 10px;
     }
-    .date {
-      color: #646462;
+    .topNoteDate {
+      margin-left: 20px;
+      color: #ffffff;
       font-size: 31px;
       font-weight: 700;
     }
-    .day {
-      color: #008e9d;
-      font-size: 80px;
-      font-weight: 700;
-      font-style: italic;
+  }
+}
+
+.scroll {
+  .watchBox {
+    margin: 20px 2%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(228, 225, 225, 0.836);
+    width: 96%;
+    height: 12vh;
+    border-radius: 20px;
+    .watchBoxItem {
+      display: flex;
+      flex-direction: column;
+      margin: 0 50px 0 30px;
+      .name {
+        font-size: 38px;
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+      .date {
+        color: #646462;
+        font-size: 31px;
+        font-weight: 700;
+      }
+      .day {
+        color: #008e9d;
+        font-size: 80px;
+        font-weight: 700;
+        font-style: italic;
+      }
     }
   }
 }

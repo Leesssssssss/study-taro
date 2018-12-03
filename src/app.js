@@ -9,7 +9,8 @@ class App extends Component {
   config = {
     pages: [
       'pages/index/index',
-      'pages/created/created'
+      'pages/created/created',
+      'pages/noteDetail/noteDetail'
     ],
     window: {
       // backgroundTextStyle: 'light',

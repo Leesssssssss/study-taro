@@ -13,7 +13,8 @@ export default class Index extends Component {
   state = {
     openid: '',
     userInfo: {},
-    notes: []
+    topNote: {},
+    otherNotes: []
   }
 
   componentWillMount() {
@@ -45,6 +46,15 @@ export default class Index extends Component {
                 openid: result.data.openid
               }
             }).then(results => {
+              var others = []
+              for (var i = 0; i < results.data.length; i++) {
+                if (results.data[i].top === true) {
+                  that.setState({ topNote: results.data[i] })
+                  break;
+                }
+                others.push(results.data[i])
+              }
+              that.setState({ otherNotes: others })
               that.setState({ notes: results.data })
               console.log(results.data);
             })
@@ -70,7 +80,7 @@ export default class Index extends Component {
   toCreated() {
     var that = this
     Taro.getUserInfo({
-      success: function(res) {
+      success: function (res) {
         that.setState({
           userInfo: res.userInfo
         })
@@ -97,28 +107,49 @@ export default class Index extends Component {
     })
   }
 
+  toNoteDetail() {
+    // 跳转至备忘录详情页面
+    Taro.navigateTo({
+      url: '/pages/noteDetail/noteDetail'
+    })
+  }
 
   render() {
     let noteInfo = null
-    const { notes } = this.state
+    const { otherNotes, topNote } = this.state
 
     const card = (
       <View>
-        {notes.map((note) =>
-          <View className='watchBox'>
-            <View className='watchBoxItem'>
-              <Text className='name'>{note.title}</Text>
-              <Text className='date'>{note.date}</Text>
-            </View>
-            <View className='watchBoxItem'>
-              <Text className='day'>{note.day}</Text>
-            </View>
+        <View className='topNote'>
+          <Text className='topNoteDay'>{topNote.day}</Text>
+          <Text className='topNoteTitle'>{topNote.title}</Text>
+          <View className='topNoteItem'>
+            <Text className='topNoteTOP'>TOP</Text>
+            <Text className='topNoteDate'>{topNote.date}</Text>
           </View>
-        )}
+        </View>
+        <ScrollView
+          className='scroll'
+          scrollY
+          scrollWithAnimation
+          scrollTop='0'
+          style='height:60vh;'>
+          {otherNotes.map((otherNote) =>
+            <View className='watchBox' key={otherNote._id} onClick={this.toNoteDetail}>
+              <View className='watchBoxItem'>
+                <Text className='name'>{otherNote.title}</Text>
+                <Text className='date'>{otherNote.date}</Text>
+              </View>
+              <View className='watchBoxItem'>
+                <Text className='day'>{otherNote.day}</Text>
+              </View>
+            </View>
+          )}
+        </ScrollView>
       </View>
     )
 
-    if (notes.length === 0) {
+    if (otherNotes.length === 0) {
       noteInfo = (
         <Button className='addBtn' open-type="getUserInfo" onClick={this.toCreated}>点击创建你的第一条备忘录</Button>
       )
