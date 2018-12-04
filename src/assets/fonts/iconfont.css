@@ -1,9 +1,9 @@
 
 @font-face {font-family: "iconfont";
-  src: url('iconfont.eot?t=1543585520085'); /* IE9*/
-  src: url('iconfont.eot?t=1543585520085#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('iconfont.ttf?t=1543585520085') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('iconfont.svg?t=1543585520085#iconfont') format('svg'); /* iOS 4.1- */
+  src: url('iconfont.eot?t=1543916541059'); /* IE9*/
+  src: url('iconfont.eot?t=1543916541059#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('iconfont.ttf?t=1543916541059') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('iconfont.svg?t=1543916541059#iconfont') format('svg'); /* iOS 4.1- */
 }
 
 .iconfont {
@@ -16,13 +16,15 @@
 
 .icon-leftround:before { content: "\e604"; }
 
-.icon-all_choose_pressed:before { content: "\e835"; }
+.icon-bianji:before { content: "\e63f"; }
 
-.icon-all_choose_default:before { content: "\e884"; }
+.icon-shanchu:before { content: "\e897"; }
 
 .icon-add:before { content: "\e674"; }
 
 .icon-time:before { content: "\e684"; }
 
 .icon-setting-selected:before { content: "\e605"; }
+
+.icon-zhuanfa:before { content: "\e6c9"; }
 

@@ -103,9 +103,16 @@ export default class Created extends Component {
       }).then(res => {
         console.log(res.data);
 
-        // 跳转至主页
-        Taro.navigateTo({
-          url: '/pages/index/index'
+        Taro.showToast({
+          title: '保存成功！',
+          icon: 'success',
+          duration: 2000
+        }).then(res => {
+          console.log(res);
+          // 跳转至主页
+          Taro.navigateTo({
+            url: '/pages/index/index'
+          })
         })
       })
     }

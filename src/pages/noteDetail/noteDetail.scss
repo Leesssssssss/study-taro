@@ -14,3 +14,54 @@
   background-color: rgba(0, 0, 0, 0.37);
   z-index: -500;
 }
+
+.back {
+  margin: 3.5vh 20px;
+}
+
+.noteDetail {
+  width: 96%;
+  margin: 0 2%;
+  height: 85vh;
+  border: 1px solid #ffffff;
+  .topNote {
+    width: 100%;
+    height: 75vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    .topNoteDay {
+      color: #ffffff;
+      font-size: 130px;
+      font-style: italic;
+      font-weight: 700;
+    }
+    .topNoteTitle {
+      color: #ffffff;
+      font-size: 38px;
+      font-weight: 700;
+    }
+    .topNoteItem {
+      display: flex;
+      align-items: center;
+      margin-top: 20px;
+      .topNoteTOP {
+        background-color: #ffffff;
+        font-size: 23px;
+        border-radius: 10px;
+        padding: 0 10px;
+      }
+      .topNoteDate {
+        margin-left: 20px;
+        color: #ffffff;
+        font-size: 31px;
+        font-weight: 700;
+      }
+    }
+  }
+  .bottom-icon {
+    display: flex;
+    justify-content: space-around;
+  }
+}

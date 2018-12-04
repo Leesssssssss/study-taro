@@ -1,8 +1,8 @@
 @font-face {font-family: "iconfont";
-  src: url('./assets/fonts/iconfont.eot?t=1543585520085'); /* IE9*/
-  src: url('./assets/fonts/iconfont.eot?t=1543585520085#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('./assets/fonts/iconfont.ttf?t=1543585520085') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('./assets/fonts/iconfont.svg?t=1543585520085#iconfont') format('svg'); /* iOS 4.1- */
+  src: url('./assets/fonts/iconfont.eot?t=1543916541059'); /* IE9*/
+  src: url('./assets/fonts/iconfont.eot?t=1543916541059#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('./assets/fonts/iconfont.ttf?t=1543916541059') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('./assets/fonts/iconfont.svg?t=1543916541059#iconfont') format('svg'); /* iOS 4.1- */
 }
 
 .icon {
@@ -23,6 +23,8 @@
 
 .icon-circle:before { content: "\e7e8"; }
 
-.icon-isChooseTrue:before { content: "\e835"; }
+.icon-bianji:before { content: "\e63f"; }
 
-.icon-isChooseFalse:before { content: "\e884"; }
+.icon-shanchu:before { content: "\e897"; }
+
+.icon-zhuanfa:before { content: "\e6c9"; }

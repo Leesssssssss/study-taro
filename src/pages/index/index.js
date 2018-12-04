@@ -12,7 +12,6 @@ export default class Index extends Component {
 
   state = {
     openid: '',
-    userInfo: {},
     topNote: {},
     otherNotes: []
   }
@@ -50,7 +49,7 @@ export default class Index extends Component {
               for (var i = 0; i < results.data.length; i++) {
                 if (results.data[i].top === true) {
                   that.setState({ topNote: results.data[i] })
-                  break;
+                  continue;
                 }
                 others.push(results.data[i])
               }
@@ -81,36 +80,37 @@ export default class Index extends Component {
     var that = this
     Taro.getUserInfo({
       success: function (res) {
-        that.setState({
-          userInfo: res.userInfo
+        // 存储获取的用户信息
+        Taro.request({
+          url: 'http://localhost:3000/getUserInfo',
+          method: 'POST',
+          data: {
+            openid: that.state.openid,
+            userInfo: res.userInfo
+          }
+        }).then(result => {
+          if (result.data === '存储用户信息成功') {
+            // 跳转至新建备忘录页面
+            Taro.navigateTo({
+              url: '/pages/created/created'
+            })
+          }
         })
       }
     })
 
-    if (!this.state.userInfo) {
-      return;
-    }
-
-    // 存储获取的用户信息
-    Taro.request({
-      url: 'http://localhost:3000/getUserInfo',
-      method: 'POST',
-      data: {
-        openid: this.state.openid,
-        userInfo: this.state.userInfo
-      }
-    })
-
-    // 跳转至新建备忘录页面
-    Taro.navigateTo({
-      url: '/pages/created/created'
-    })
   }
 
-  toNoteDetail() {
+  toNoteDetail(otherNote) {
     // 跳转至备忘录详情页面
+    var date = otherNote.date
+    var title = otherNote.title
+    var day = otherNote.day
+    var repeat = otherNote.repeat
+    var top = otherNote.top
+    var _id = otherNote._id
     Taro.navigateTo({
-      url: '/pages/noteDetail/noteDetail'
+      url: '/pages/noteDetail/noteDetail?date=' + date + '&title=' + title + '&day=' + day + '&repeat=' + repeat + '&top=' + top + '&_id=' + _id
     })
   }
 
@@ -135,7 +135,7 @@ export default class Index extends Component {
           scrollTop='0'
           style='height:60vh;'>
           {otherNotes.map((otherNote) =>
-            <View className='watchBox' key={otherNote._id} onClick={this.toNoteDetail}>
+            <View className='watchBox' key={otherNote._id} onClick={this.toNoteDetail.bind(this, otherNote)}>
               <View className='watchBoxItem'>
                 <Text className='name'>{otherNote.title}</Text>
                 <Text className='date'>{otherNote.date}</Text>
