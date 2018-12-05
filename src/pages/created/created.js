@@ -25,7 +25,7 @@ export default class Created extends Component {
     // 获取本地存储openid
     Taro.getStorage({ key: 'openid' })
       .then(res =>
-        this.state.openid = res.data
+        this.setState({openid: res.data})
       )
   }
 

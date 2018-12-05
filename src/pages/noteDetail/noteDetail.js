@@ -16,12 +16,18 @@ export default class noteDetail extends Component {
   }
 
   componentWillMount() {
-    this.setState({ note: this.$router.params });
+    this.setState({ note: this.$router.params }, () => {
+      this.compute(this.state.note.date)
+    });
     // 获取本地存储openid
     Taro.getStorage({ key: 'openid' })
       .then(res =>
-        this.state.openid = res.data
+        this.setState({
+          openid: res.data
+        })
       )
+    // console.log(this.$router.params);
+    // this.compute(this.$router.params.date);
   }
 
   componentDidMount() { }
@@ -36,6 +42,20 @@ export default class noteDetail extends Component {
   back() {
     Taro.navigateBack({
       delta: 1
+    })
+  }
+
+  compute(noteDay) {
+    var start = (new Date()).getFullYear() + '-' + ((new Date()).getMonth() + 1) + '-' + (new Date()).getDate()
+    var start_date = new Date(start.replace(/-/g, "/"))
+    var end_date = new Date(noteDay.replace(/-/g, "/"))
+    var days = end_date.getTime() - start_date.getTime()
+    var day = parseInt(days / (1000 * 60 * 60 * 24))
+    console.log(day);
+    let note = this.state.note;
+    note.day = day;
+    this.setState({
+      note: note
     })
   }
 

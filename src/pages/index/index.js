@@ -18,6 +18,11 @@ export default class Index extends Component {
 
   componentWillMount() {
     var that = this
+    
+    // Taro.showLoading({
+    //   title: 'loading'
+    // })
+
     Taro.login({
       success(res) {
         if (res.code) {
@@ -47,15 +52,19 @@ export default class Index extends Component {
             }).then(results => {
               var others = []
               for (var i = 0; i < results.data.length; i++) {
+                
+
+
                 if (results.data[i].top === true) {
                   that.setState({ topNote: results.data[i] })
                   continue;
                 }
                 others.push(results.data[i])
               }
-              that.setState({ otherNotes: others })
-              that.setState({ notes: results.data })
-              console.log(results.data);
+              that.setState({ 
+                otherNotes: others,
+                notes: results.data
+              })
             })
             that.setState({ openid: result.data.openid })
             Taro.setStorage({ key: 'openid', data: result.data.openid })
@@ -160,6 +169,7 @@ export default class Index extends Component {
         </View>
       )
     }
+
     return (
       <View>
         <Image className='bgImg' src={bgImg} />
