@@ -12,17 +12,26 @@ export default class Index extends Component {
 
   state = {
     openid: '',
+    note: [],
     topNote: {},
-    otherNotes: []
+    otherNotes: [],
+    isShowNote: false
   }
 
   componentWillMount() {
-    var that = this
-    
-    // Taro.showLoading({
-    //   title: 'loading'
-    // })
+    this.getLogin();
+  }
 
+  componentDidMount() { }
+
+  componentWillUnmount() { }
+
+  componentDidShow() { }
+
+  componentDidHide() { }
+
+  getLogin() {
+    let that = this;
     Taro.login({
       success(res) {
         if (res.code) {
@@ -41,33 +50,10 @@ export default class Index extends Component {
                 session_key: result.data.session_key
               }
             })
-
-            // 根据获取的openid获取用户备忘录
-            Taro.request({
-              url: 'http://localhost:3000/getNote',
-              method: 'POST',
-              data: {
-                openid: result.data.openid
-              }
-            }).then(results => {
-              var others = []
-              for (var i = 0; i < results.data.length; i++) {
-                
-
-
-                if (results.data[i].top === true) {
-                  that.setState({ topNote: results.data[i] })
-                  continue;
-                }
-                others.push(results.data[i])
-              }
-              that.setState({ 
-                otherNotes: others,
-                notes: results.data
-              })
-            })
-            that.setState({ openid: result.data.openid })
             Taro.setStorage({ key: 'openid', data: result.data.openid })
+            that.setState({ openid: result.data.openid }, () => {
+              that.getNotes()
+            })
           })
         } else {
           console.log('登录失败！' + res.errMsg)
@@ -76,14 +62,43 @@ export default class Index extends Component {
     })
   }
 
-  componentDidMount() { }
+  getNotes() {
+    // 根据获取的openid获取用户备忘录
+    Taro.request({
+      url: 'http://localhost:3000/getNote',
+      method: 'POST',
+      data: {
+        openid: this.state.openid
+      }
+    }).then(results => {
+      this.setState({ note: results.data })
+      let others = []
+      for (let i = 0; i < results.data.length; i++) {
+        results.data[i].day = this.compute(results.data[i].date)
+        if (results.data[i].top === true) {
+          this.setState({ topNote: results.data[i] })
+          continue;
+        }
+        others.push(results.data[i])
+      }
+      this.setState({
+        otherNotes: others
+      }, () => {
+        this.setState({
+          isShowNote: true
+        })
+      })
+    })
+  }
 
-  componentWillUnmount() { }
-
-  componentDidShow() { }
-
-  componentDidHide() { }
-
+  compute(noteDay) {
+    var start = (new Date()).getFullYear() + '-' + ((new Date()).getMonth() + 1) + '-' + (new Date()).getDate()
+    var start_date = new Date(start.replace(/-/g, "/"))
+    var end_date = new Date(noteDay.replace(/-/g, "/"))
+    var days = end_date.getTime() - start_date.getTime()
+    var day = parseInt(days / (1000 * 60 * 60 * 24))
+    return day
+  }
 
   toCreated() {
     var that = this
@@ -107,7 +122,6 @@ export default class Index extends Component {
         })
       }
     })
-
   }
 
   toNoteDetail(otherNote) {
@@ -125,7 +139,8 @@ export default class Index extends Component {
 
   render() {
     let noteInfo = null
-    const { otherNotes, topNote } = this.state
+    const { note, otherNotes, topNote } = this.state
+    let isShowNote = this.state.isShowNote
 
     const card = (
       <View>
@@ -158,11 +173,11 @@ export default class Index extends Component {
       </View>
     )
 
-    if (otherNotes.length === 0) {
+    if (note.length === 0 && isShowNote) {
       noteInfo = (
         <Button className='addBtn' open-type="getUserInfo" onClick={this.toCreated}>点击创建你的第一条备忘录</Button>
       )
-    } else {
+    } else if (note.length > 0 && isShowNote) {
       noteInfo = (
         <View>
           {card}
