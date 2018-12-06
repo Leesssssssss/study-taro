@@ -1,0 +1,16 @@
+.back {
+  margin: 3.5vh 20px;
+}
+
+.shareBtn {
+  background-color: #008e9d;
+  color: #ffffff;
+  font-weight: 700;
+  width: 400px;
+  border-radius: 50px;
+}
+
+
+button::after {
+  border: none;
+}

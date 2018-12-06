@@ -124,14 +124,14 @@ export default class Index extends Component {
     })
   }
 
-  toNoteDetail(otherNote) {
+  toNoteDetail(note) {
     // 跳转至备忘录详情页面
-    var date = otherNote.date
-    var title = otherNote.title
-    var day = otherNote.day
-    var repeat = otherNote.repeat
-    var top = otherNote.top
-    var _id = otherNote._id
+    var date = note.date
+    var title = note.title
+    var day = note.day
+    var repeat = note.repeat
+    var top = note.top
+    var _id = note._id
     Taro.navigateTo({
       url: '/pages/noteDetail/noteDetail?date=' + date + '&title=' + title + '&day=' + day + '&repeat=' + repeat + '&top=' + top + '&_id=' + _id
     })
@@ -144,7 +144,7 @@ export default class Index extends Component {
 
     const card = (
       <View>
-        <View className='topNote'>
+        <View className='topNote' onClick={this.toNoteDetail.bind(this, topNote)}>
           <Text className='topNoteDay'>{topNote.day}</Text>
           <Text className='topNoteTitle'>{topNote.title}</Text>
           <View className='topNoteItem'>

@@ -10,7 +10,8 @@ class App extends Component {
     pages: [
       'pages/index/index',
       'pages/created/created',
-      'pages/noteDetail/noteDetail'
+      'pages/noteDetail/noteDetail',
+      'pages/share/share'
     ],
     window: {
       // backgroundTextStyle: 'light',

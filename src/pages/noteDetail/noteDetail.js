@@ -59,6 +59,13 @@ export default class noteDetail extends Component {
     })
   }
 
+  // 分享
+  toShare() {
+    Taro.navigateTo({
+      url: '/pages/share/share'
+    })
+  }
+
   // 删除备忘录
   deleteNote() {
     Taro.showModal({
@@ -84,6 +91,14 @@ export default class noteDetail extends Component {
   }
 
   render() {
+    let top = null
+    const { note } = this.state
+    if (note.top === 'true') {
+      top = (
+        <Text className='topNoteTOP'>TOP</Text>
+      )
+    }
+
     return (
       <View>
         <Image className='bgImg' src={bgImg} />
@@ -98,14 +113,14 @@ export default class noteDetail extends Component {
             <Text className='topNoteDay'>{this.state.note.day}</Text>
             <Text className='topNoteTitle'>{this.state.note.title}</Text>
             <View className='topNoteItem'>
-              <Text className='topNoteTOP'>TOP</Text>
+              {top}
               <Text className='topNoteDate'>{this.state.note.date}</Text>
             </View>
           </View>
 
           <View className='bottom-icon'>
             <AtIcon prefixClass='icon' value='bianji' size='30' color='#ffffff'></AtIcon>
-            <AtIcon prefixClass='icon' value='zhuanfa' size='30' color='#ffffff'></AtIcon>
+            <AtIcon prefixClass='icon' value='zhuanfa' size='30' color='#ffffff' onClick={this.toShare}></AtIcon>
             <AtIcon prefixClass='icon' value='shanchu' size='30' color='#ffffff' onClick={this.deleteNote}></AtIcon>
           </View>
         </View>
