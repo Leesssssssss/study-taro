@@ -59,6 +59,20 @@ export default class noteDetail extends Component {
     })
   }
 
+  // 修改备忘录
+  toCreated(){
+    var date = this.state.note.date
+    var title = this.state.note.title
+    var day = this.state.note.day
+    var repeat = this.state.note.repeat
+    var top = this.state.note.top
+    var _id = this.state.note._id
+    var update = 'update'
+    Taro.navigateTo({
+      url: '/pages/created/created?date=' + date + '&title=' + title + '&day=' + day + '&repeat=' + repeat + '&top=' + top + '&_id=' + _id + '&update=' + update
+    })
+  }
+
   // 分享
   toShare() {
     Taro.navigateTo({
@@ -119,7 +133,7 @@ export default class noteDetail extends Component {
           </View>
 
           <View className='bottom-icon'>
-            <AtIcon prefixClass='icon' value='bianji' size='30' color='#ffffff'></AtIcon>
+            <AtIcon prefixClass='icon' value='bianji' size='30' color='#ffffff' onClick={this.toCreated}></AtIcon>
             <AtIcon prefixClass='icon' value='zhuanfa' size='30' color='#ffffff' onClick={this.toShare}></AtIcon>
             <AtIcon prefixClass='icon' value='shanchu' size='30' color='#ffffff' onClick={this.deleteNote}></AtIcon>
           </View>

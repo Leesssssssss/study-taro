@@ -13,6 +13,7 @@ export default class Created extends Component {
 
   state = {
     inputValue: '备忘录名称',
+    value: '',
     dateSel: (new Date()).getFullYear() + '-' + ((new Date()).getMonth() + 1) + '-' + (new Date()).getDate(),
     selector: ['不重复', '每年', '每月', '每周'],
     selectorChecked: '不重复',
@@ -25,8 +26,20 @@ export default class Created extends Component {
     // 获取本地存储openid
     Taro.getStorage({ key: 'openid' })
       .then(res =>
-        this.setState({openid: res.data})
+        this.setState({ openid: res.data })
       )
+
+    // 如果是修改备忘录则先获取传入的数据
+    if (this.$router.params.update === 'update') {
+      this.setState({
+        dateSel: this.$router.params.date,
+        day: this.$router.params.day,
+        selectorChecked: this.$router.params.repeat,
+        inputValue: this.$router.params.title,
+        value: this.$router.params.title,
+        top: (this.$router.params.top) === "false" ? false : true
+      })
+    }
   }
 
   componentDidMount() { }
@@ -88,33 +101,48 @@ export default class Created extends Component {
         duration: 2000
       })
     } else {
-      var note = {
-        title: this.state.inputValue,
-        date: this.state.dateSel,
-        repeat: this.state.selectorChecked,
-        top: this.state.top,
-        day: this.state.day,
-        openid: this.state.openid
-      }
-      Taro.request({
-        url: 'http://localhost:3000/addNote',
-        method: 'POST',
-        data: note
-      }).then(res => {
-        console.log(res.data);
-
-        Taro.showToast({
-          title: '保存成功！',
-          icon: 'success',
-          duration: 2000
+      // 如果是修改备忘录
+      if (this.$router.params.update === 'update') {
+        var note = {
+          title: this.state.inputValue,
+          date: this.state.dateSel,
+          repeat: this.state.selectorChecked,
+          top: this.state.top,
+          day: this.state.day,
+          openid: this.state.openid,
+          _id: this.$router.params._id
+        }
+        console.log(note);
+        // 如果是创建新的备忘录
+      } else {
+        var note = {
+          title: this.state.inputValue,
+          date: this.state.dateSel,
+          repeat: this.state.selectorChecked,
+          top: this.state.top,
+          day: this.state.day,
+          openid: this.state.openid
+        }
+        Taro.request({
+          url: 'http://localhost:3000/addNote',
+          method: 'POST',
+          data: note
         }).then(res => {
-          console.log(res);
-          // 跳转至主页
-          Taro.navigateTo({
-            url: '/pages/index/index'
+          console.log(res.data);
+
+          Taro.showToast({
+            title: '保存成功！',
+            icon: 'success',
+            duration: 2000
+          }).then(res => {
+            console.log(res);
+            // 跳转至主页
+            Taro.navigateTo({
+              url: '/pages/index/index'
+            })
           })
         })
-      })
+      }
     }
   }
 
@@ -149,7 +177,7 @@ export default class Created extends Component {
 
         <View className='inputBox'>
           <Text className='title'>备忘录名称</Text>
-          <Input className='input' onInput={this.onInput} placeholder='请输入备忘录名称'></Input>
+          <Input className='input' value={this.state.value} onInput={this.onInput} placeholder='请输入备忘录名称'></Input>
         </View>
 
         <View className='inputBox'>
