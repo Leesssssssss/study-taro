@@ -113,8 +113,28 @@ export default class Created extends Component {
           _id: this.$router.params._id
         }
         console.log(note);
-        // 如果是创建新的备忘录
+        Taro.request({
+          url: 'http://localhost:3000/updateNote',
+          method: 'POST',
+          data: note
+        }).then(res => {
+          if (res.data === '修改备忘录成功') {
+            Taro.showToast({
+              title: '保存成功！',
+              icon: 'success',
+              duration: 2000
+            }).then(res => {
+              console.log(res);
+              // 跳转至主页
+              Taro.navigateTo({
+                url: '/pages/index/index'
+              })
+            })
+          }
+        })
+
       } else {
+        // 如果是创建新的备忘录
         var note = {
           title: this.state.inputValue,
           date: this.state.dateSel,

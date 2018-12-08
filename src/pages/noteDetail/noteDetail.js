@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Image } from '@tarojs/components'
+import { View, Text, Image, Canvas } from '@tarojs/components'
 import './noteDetail.scss'
 import { AtIcon } from 'taro-ui'
 import bgImg from '../../assets/image/bgImg.png'
@@ -122,7 +122,7 @@ export default class noteDetail extends Component {
           <AtIcon prefixClass='icon' value='leftround' size='30' color='#ffffff'></AtIcon>
         </View>
 
-        <View className='noteDetail'>
+        <Canvas canvasId='canvas' className='noteDetail'>
           <View className='topNote'>
             <Text className='topNoteDay'>{this.state.note.day}</Text>
             <Text className='topNoteTitle'>{this.state.note.title}</Text>
@@ -137,7 +137,7 @@ export default class noteDetail extends Component {
             <AtIcon prefixClass='icon' value='zhuanfa' size='30' color='#ffffff' onClick={this.toShare}></AtIcon>
             <AtIcon prefixClass='icon' value='shanchu' size='30' color='#ffffff' onClick={this.deleteNote}></AtIcon>
           </View>
-        </View>
+        </Canvas>
 
       </View>
     )
