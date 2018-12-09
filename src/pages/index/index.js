@@ -15,11 +15,19 @@ export default class Index extends Component {
     note: [],
     topNote: {},
     otherNotes: [],
-    isShowNote: false
+    otherNotesDone: [],
+    isShowNote: false,
+    scrollHeight: ''
   }
 
   componentWillMount() {
-    this.getLogin();
+    this.getLogin()
+    var that = this
+    Taro.getSystemInfo({
+      success: function (res) {
+        that.setState({ scrollHeight: 'height:' + (res.windowHeight * 0.55) + 'px' });
+      }
+    });  
   }
 
   componentDidMount() { }
@@ -30,6 +38,7 @@ export default class Index extends Component {
 
   componentDidHide() { }
 
+  // 登录获取用户信息
   getLogin() {
     let that = this;
     Taro.login({
@@ -62,6 +71,15 @@ export default class Index extends Component {
     })
   }
 
+  // 根据每一条备忘录的day属性值进行排序
+  compare(property) {
+    return function (a, b) {
+      var value1 = a[property];
+      var value2 = b[property];
+      return value1 - value2;
+    }
+  }
+
   getNotes() {
     // 根据获取的openid获取用户备忘录
     Taro.request({
@@ -73,16 +91,27 @@ export default class Index extends Component {
     }).then(results => {
       this.setState({ note: results.data })
       let others = []
+      let othersDone = []
       for (let i = 0; i < results.data.length; i++) {
         results.data[i].day = this.compute(results.data[i].date)
+        // 找出置顶的一条备忘录
         if (results.data[i].top === true) {
           this.setState({ topNote: results.data[i] })
           continue;
         }
-        others.push(results.data[i])
+        // 将日期已经过去的备忘录存入一个数组
+        if (results.data[i].day < 0) {
+          othersDone.push(results.data[i])
+        } else {
+          // 将剩下的备忘录存入一个数组
+          others.push(results.data[i])
+        }
       }
+      others.sort(this.compare('day'))
+      othersDone.reverse(this.compare('day'))
       this.setState({
-        otherNotes: others
+        otherNotes: others,
+        otherNotesDone: othersDone
       }, () => {
         this.setState({
           isShowNote: true
@@ -91,6 +120,7 @@ export default class Index extends Component {
     })
   }
 
+  // 计算day，即 设置的日期 与 当天的日期 之间的差值
   compute(noteDay) {
     var start = (new Date()).getFullYear() + '-' + ((new Date()).getMonth() + 1) + '-' + (new Date()).getDate()
     var start_date = new Date(start.replace(/-/g, "/"))
@@ -100,6 +130,7 @@ export default class Index extends Component {
     return day
   }
 
+  // 新建备忘录
   toCreated() {
     var that = this
     Taro.getUserInfo({
@@ -125,7 +156,7 @@ export default class Index extends Component {
   }
 
   toNoteDetail(note) {
-    // 跳转至备忘录详情页面
+    // 携带点击的备忘录信息跳转至备忘录详情页面
     var date = note.date
     var title = note.title
     var day = note.day
@@ -139,25 +170,46 @@ export default class Index extends Component {
 
   render() {
     let noteInfo = null
-    const { note, otherNotes, topNote } = this.state
+    let topDay = null
+    let topTitle = null
+    const { note, otherNotes, otherNotesDone, topNote } = this.state
     let isShowNote = this.state.isShowNote
 
+    // 判断置顶备忘录day是否为负数，若是则需要更改样式
+    if (topNote.day < 0) {
+      topDay = (
+        <Text className='topNoteDay'>{Math.abs(topNote.day)}</Text>
+      )
+      topTitle = (
+        <Text className='topNoteTitle'>{topNote.title.slice(0, -2) + '已经'}</Text>
+      )
+    } else {
+      topDay = (
+        <Text className='topNoteDay'>{topNote.day}</Text>
+      )
+      topTitle = (
+        <Text className='topNoteTitle'>{topNote.title}</Text>
+      )
+    }
+
     const card = (
-      <View>
+      <View className='card'>
+        {/* 置顶备忘录 */}
         <View className='topNote' onClick={this.toNoteDetail.bind(this, topNote)}>
-          <Text className='topNoteDay'>{topNote.day}</Text>
-          <Text className='topNoteTitle'>{topNote.title}</Text>
+          {topDay}
+          {topTitle}
           <View className='topNoteItem'>
             <Text className='topNoteTOP'>TOP</Text>
             <Text className='topNoteDate'>{topNote.date}</Text>
           </View>
         </View>
+        {/* 其他非置顶备忘录 */}
         <ScrollView
           className='scroll'
           scrollY
           scrollWithAnimation
           scrollTop='0'
-          style='height:60vh;'>
+          style={this.state.scrollHeight}>
           {otherNotes.map((otherNote) =>
             <View className='watchBox' key={otherNote._id} onClick={this.toNoteDetail.bind(this, otherNote)}>
               <View className='watchBoxItem'>
@@ -169,17 +221,30 @@ export default class Index extends Component {
               </View>
             </View>
           )}
+          {otherNotesDone.map((otherNoteDone) =>
+            <View className='watchBox' key={otherNoteDone._id} onClick={this.toNoteDetail.bind(this, otherNoteDone)}>
+              <View className='watchBoxItem'>
+                <Text className='name'>{otherNoteDone.title.slice(0, -2) + '已经'}</Text>
+                <Text className='date'>{otherNoteDone.date}</Text>
+              </View>
+              <View className='watchBoxItem'>
+                <Text className='dayR'>{Math.abs(otherNoteDone.day)}</Text>
+              </View>
+            </View>
+          )}
         </ScrollView>
       </View>
     )
 
+    // 若没有保存过备忘录则要显示创建第一条备忘录的按钮
     if (note.length === 0 && isShowNote) {
       noteInfo = (
         <Button className='addBtn' open-type="getUserInfo" onClick={this.toCreated}>点击创建你的第一条备忘录</Button>
       )
     } else if (note.length > 0 && isShowNote) {
+      // 若保存过备忘录直接显示备忘录
       noteInfo = (
-        <View>
+        <View className='card'>
           {card}
         </View>
       )
@@ -187,9 +252,11 @@ export default class Index extends Component {
 
     return (
       <View>
+        {/* 背景图片 */}
         <Image className='bgImg' src={bgImg} />
         <View className='mask'></View>
 
+        {/* 左上角icon图标 */}
         <View className='icons'>
           <View className='iconsItem' onClick={this.toCreated}>
             <AtIcon prefixClass='icon' value='add' size='20' color='#4e3a4b'></AtIcon>

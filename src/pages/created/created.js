@@ -79,6 +79,7 @@ export default class Created extends Component {
     })
   }
 
+  // 实时获取输入的备忘录名称
   onInput = e => {
     this.setState({
       inputValue: e.detail.value + '还有'
@@ -112,7 +113,6 @@ export default class Created extends Component {
           openid: this.state.openid,
           _id: this.$router.params._id
         }
-        console.log(note);
         Taro.request({
           url: 'http://localhost:3000/updateNote',
           method: 'POST',
@@ -124,7 +124,6 @@ export default class Created extends Component {
               icon: 'success',
               duration: 2000
             }).then(res => {
-              console.log(res);
               // 跳转至主页
               Taro.navigateTo({
                 url: '/pages/index/index'
@@ -132,7 +131,6 @@ export default class Created extends Component {
             })
           }
         })
-
       } else {
         // 如果是创建新的备忘录
         var note = {
@@ -148,14 +146,11 @@ export default class Created extends Component {
           method: 'POST',
           data: note
         }).then(res => {
-          console.log(res.data);
-
           Taro.showToast({
             title: '保存成功！',
             icon: 'success',
             duration: 2000
           }).then(res => {
-            console.log(res);
             // 跳转至主页
             Taro.navigateTo({
               url: '/pages/index/index'
@@ -167,7 +162,11 @@ export default class Created extends Component {
   }
 
   render() {
-    let isChoose = null;
+    let isChoose = null
+    let noteDay = null
+    let noteTitle = null
+
+    // 选择置顶该条备忘录则top为true
     if (top === true) {
       isChoose = (
         <View className='choose'>
@@ -175,21 +174,44 @@ export default class Created extends Component {
         </View>
       )
     } else {
+      // 选择不置顶该条备忘录则top为false
       isChoose = (
         <View className='choose'>
           <AtIcon value='check-circle' size='25' color='#b4b7ba'></AtIcon>
         </View>
       )
     }
+
+    // 判断备忘录day是否为负数，若是则需要更改样式
+    if (this.state.day < 0) {
+      noteDay = (
+        <Text className='dayR'>{Math.abs(this.state.day)}</Text>
+      )
+      noteTitle = (
+        <Text className='name'>{this.state.inputValue.slice(0,-2) + '已经'}</Text>
+      )
+    } else {
+      noteDay = (
+        <Text className='day'>{this.state.day}</Text>
+      )
+      noteTitle = (
+        <Text className='name'>{this.state.inputValue}</Text>
+      )
+    }
+    
+
     return (
       <View>
+        {/* 背景图片 */}
         <Image className='bgImg' src={bgImg} />
         <View className='mask'></View>
 
+        {/* 返回上一页icon图标 */}
         <View className='back' onClick={this.back}>
           <AtIcon prefixClass='icon' value='leftround' size='30' color='#000000'></AtIcon>
         </View>
 
+        {/* 备忘录具体内容 */}
         <View className='titleBox'>
           <Text className='title'>创建新备忘录</Text>
           <Button className='saveBtn' onClick={this.save}>保存</Button>
@@ -225,15 +247,16 @@ export default class Created extends Component {
           <Text className='title'>置顶</Text>
         </View>
 
+        {/* 预览备忘录 */}
         <View className='watch'>
           <Text className='title'>预览</Text>
           <View className='watchBox'>
             <View className='watchBoxItem'>
-              <Text className='name'>{this.state.inputValue}</Text>
+              {noteTitle}
               <Text className='date'>{this.state.dateSel}</Text>
             </View>
             <View className='watchBoxItem'>
-              <Text className='day'>{this.state.day}</Text>
+              {noteDay}
             </View>
           </View>
         </View>
