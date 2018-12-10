@@ -114,7 +114,7 @@ export default class Created extends Component {
           _id: this.$router.params._id
         }
         Taro.request({
-          url: 'http://localhost:3000/updateNote',
+          url: 'https://lee.hhp.im/updateNote',
           method: 'POST',
           data: note
         }).then(res => {
@@ -125,7 +125,7 @@ export default class Created extends Component {
               duration: 2000
             }).then(res => {
               // 跳转至主页
-              Taro.navigateTo({
+              Taro.redirectTo({
                 url: '/pages/index/index'
               })
             })
@@ -142,7 +142,7 @@ export default class Created extends Component {
           openid: this.state.openid
         }
         Taro.request({
-          url: 'http://localhost:3000/addNote',
+          url: 'https://lee.hhp.im/addNote',
           method: 'POST',
           data: note
         }).then(res => {
@@ -152,7 +152,7 @@ export default class Created extends Component {
             duration: 2000
           }).then(res => {
             // 跳转至主页
-            Taro.navigateTo({
+            Taro.redirectTo({
               url: '/pages/index/index'
             })
           })
@@ -167,7 +167,7 @@ export default class Created extends Component {
     let noteTitle = null
 
     // 选择置顶该条备忘录则top为true
-    if (top === true) {
+    if (this.state.top === true) {
       isChoose = (
         <View className='choose'>
           <AtIcon value='check-circle' size='25' color='#fad300'></AtIcon>

@@ -52,7 +52,7 @@ export default class Index extends Component {
             url: 'https://api.weixin.qq.com/sns/jscode2session?appid=' + appId + '&secret=' + secret + '&js_code=' + code + '&grant_type=authorization_code'
           }).then(result => {
             Taro.request({
-              url: 'http://localhost:3000/getOpenId',
+              url: 'https://lee.hhp.im/getOpenId',
               method: 'POST',
               data: {
                 openid: result.data.openid,
@@ -83,7 +83,7 @@ export default class Index extends Component {
   getNotes() {
     // 根据获取的openid获取用户备忘录
     Taro.request({
-      url: 'http://localhost:3000/getNote',
+      url: 'https://lee.hhp.im/getNote',
       method: 'POST',
       data: {
         openid: this.state.openid
@@ -137,7 +137,7 @@ export default class Index extends Component {
       success: function (res) {
         // 存储获取的用户信息
         Taro.request({
-          url: 'http://localhost:3000/getUserInfo',
+          url: 'https://lee.hhp.im/getUserInfo',
           method: 'POST',
           data: {
             openid: that.state.openid,

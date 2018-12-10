@@ -91,14 +91,14 @@ export default class noteDetail extends Component {
         console.log(res.confirm, res.cancel)
         if (res.confirm === true) {
           Taro.request({
-            url: 'http://localhost:3000/deleteNote',
+            url: 'https://lee.hhp.im/deleteNote',
             method: 'POST',
             data: {
               openid: this.state.openid,
               _id: this.state.note._id
             }
           })
-          Taro.navigateTo({
+          Taro.redirectTo({
             url: '/pages/index/index'
           })
         }
