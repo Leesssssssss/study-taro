@@ -76,8 +76,11 @@ export default class noteDetail extends Component {
 
   // 分享
   toShare() {
+    var date = this.state.note.date
+    var title = this.state.note.title
+    var day = this.state.note.day
     Taro.navigateTo({
-      url: '/pages/share/share'
+      url: '/pages/share/share?date=' + date + '&title=' + title + '&day=' + day
     })
   }
 

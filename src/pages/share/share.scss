@@ -2,6 +2,54 @@
   margin: 3.5vh 20px;
 }
 
+.topNote {
+  width: 90%;
+  height: 40vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 20px;
+  margin: 5vh 5% 10vh 5%;
+  .bgImg {
+    position: absolute;
+    top: 13vh;
+    width: 90%;
+    height: 40vh;
+    border-radius: 20px;
+    // margin: 5vh 5% 10vh 5%;
+    z-index: -1000;
+  }
+  
+  .mask {
+    width: 90%;
+    height: 40vh;
+    border-radius: 20px;
+    // margin: 5vh 5% 10vh 5%;
+    position: absolute;
+    top: 13vh;
+    background-color: rgba(0, 0, 0, 0.37);
+    z-index: -500;
+  }
+  .topNoteDay {
+    color: #ffffff;
+    font-size: 130px;
+    font-style: italic;
+    font-weight: 700;
+  }
+  .topNoteTitle {
+    color: #ffffff;
+    font-size: 38px;
+    font-weight: 700;
+  }
+  .topNoteDate {
+    margin-top: 20px;
+    color: #ffffff;
+    font-size: 31px;
+    font-weight: 700;
+  }
+}
+
 .shareBtn {
   background-color: #008e9d;
   color: #ffffff;
