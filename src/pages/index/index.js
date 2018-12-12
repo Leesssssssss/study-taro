@@ -252,24 +252,26 @@ export default class Index extends Component {
 
     return (
       <View>
-        {/* 背景图片 */}
-        <Image className='bgImg' src={bgImg} />
+        {/* 背景罩 */}
         <View className='mask'></View>
 
         {/* 左上角icon图标 */}
         <View className='icons'>
           <View className='iconsItem' onClick={this.toCreated}>
-            <AtIcon prefixClass='icon' value='add' size='20' color='#4e3a4b'></AtIcon>
+            <AtIcon className='icon' prefixClass='icon' value='add' size='20' color='#4e3a4b'></AtIcon>
           </View>
           <View className='iconsItem'>
-            <AtIcon prefixClass='icon' value='setting' size='22' color='#4e3a4b'></AtIcon>
+            <AtIcon className='icon' prefixClass='icon' value='setting' size='22' color='#4e3a4b'></AtIcon>
           </View>
           <View className='iconsItem'>
-            <AtIcon prefixClass='icon' value='time' size='22' color='#4e3a4b'></AtIcon>
+            <AtIcon className='icon' prefixClass='icon' value='time' size='22' color='#4e3a4b'></AtIcon>
           </View>
         </View>
 
         {noteInfo}
+
+        {/* 背景图片 */}
+        <Image className='bgImg' src={bgImg} />
       </View>
     )
   }

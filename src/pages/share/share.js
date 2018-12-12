@@ -12,8 +12,9 @@ export default class Index extends Component {
   state = {
     topNote: {}
   }
+
   componentWillMount() {
-    console.log(this.$router.params);
+    // 获取要分享的备忘录信息
     this.setState({
       topNote: {
         date: this.$router.params.date,
@@ -63,20 +64,22 @@ export default class Index extends Component {
 
     return (
       <View>
+        {/* 返回上一页icon图标 */}
         <View className='back' onClick={this.back}>
           <AtIcon prefixClass='icon' value='leftround' size='30' color='#000000'></AtIcon>
         </View>
 
+        {/* 备忘录卡片 */}
         <View className='topNote'>
-          <Image className='bgImg' mode='aspectFill' src={bgImg} />
           <View className='mask'></View>
           {topDay}
           {topTitle}
           <Text className='topNoteDate'>{topNote.date}</Text>
+          <Image className='bgImg' mode='aspectFill' src={bgImg} />
         </View>
 
+        {/* 分享按钮 */}
         <Button className='shareBtn' openType='share'>分享给群或好友</Button>
-
       </View>
     )
   }

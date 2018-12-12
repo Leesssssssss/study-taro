@@ -202,8 +202,7 @@ export default class Created extends Component {
 
     return (
       <View>
-        {/* 背景图片 */}
-        <Image className='bgImg' src={bgImg} />
+        {/* 背景罩 */}
         <View className='mask'></View>
 
         {/* 返回上一页icon图标 */}
@@ -260,6 +259,9 @@ export default class Created extends Component {
             </View>
           </View>
         </View>
+
+        {/* 背景图片 */}
+        <Image className='bgImg' src={bgImg} />
       </View>
     )
   }
