@@ -22,12 +22,6 @@ export default class Index extends Component {
 
   componentWillMount() {
     this.getLogin()
-    var that = this
-    Taro.getSystemInfo({
-      success: function (res) {
-        that.setState({ scrollHeight: 'height:' + (res.windowHeight * 0.55) + 'px' });
-      }
-    });  
   }
 
   componentDidMount() { }
@@ -89,6 +83,17 @@ export default class Index extends Component {
         openid: this.state.openid
       }
     }).then(results => {
+      // 每页最多显示5条备忘录，超出则要给ScollView设置高度使之可以滚动
+      if (results.data.length > 5) {
+        var that = this
+        Taro.getSystemInfo({
+          success: function (res) {
+            console.log(res)
+            that.setState({ scrollHeight: 'height:' + (res.windowHeight * 0.55) + 'px' });
+          }
+        });
+      }
+
       this.setState({ note: results.data })
       let others = []
       let othersDone = []
