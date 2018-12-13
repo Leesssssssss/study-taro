@@ -98,7 +98,8 @@ export default class noteDetail extends Component {
             method: 'POST',
             data: {
               openid: this.state.openid,
-              _id: this.state.note._id
+              _id: this.state.note._id,
+              top: this.state.note.top
             }
           })
           Taro.redirectTo({
@@ -127,7 +128,7 @@ export default class noteDetail extends Component {
         <Text className='topNoteDay'>{Math.abs(note.day)}</Text>
       )
       topTitle = (
-        <Text className='topNoteTitle'>{note.title.slice(0,-2) + '已经'}</Text>
+        <Text className='topNoteTitle'>{note.title.slice(0, -2) + '已经'}</Text>
       )
     } else {
       topDay = (

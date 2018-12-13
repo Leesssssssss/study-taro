@@ -115,6 +115,7 @@ export default class Created extends Component {
         }
         Taro.request({
           url: 'https://lee.hhp.im/updateNote',
+          // url: 'http://localhost:3000/updateNote',
           method: 'POST',
           data: note
         }).then(res => {

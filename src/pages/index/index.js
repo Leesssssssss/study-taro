@@ -47,6 +47,7 @@ export default class Index extends Component {
           }).then(result => {
             Taro.request({
               url: 'https://lee.hhp.im/getOpenId',
+              // url: 'http://localhost:3000/getOpenId',
               method: 'POST',
               data: {
                 openid: result.data.openid,
@@ -78,6 +79,7 @@ export default class Index extends Component {
     // 根据获取的openid获取用户备忘录
     Taro.request({
       url: 'https://lee.hhp.im/getNote',
+      // url: 'http://localhost:3000/getNote',
       method: 'POST',
       data: {
         openid: this.state.openid
