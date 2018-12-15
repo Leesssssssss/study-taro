@@ -19,7 +19,8 @@ export default class Created extends Component {
     selectorChecked: '不重复',
     day: 0,
     top: true,
-    openid: ''
+    openid: '',
+    title: '创建新备忘录'
   }
 
   componentWillMount() {
@@ -37,7 +38,8 @@ export default class Created extends Component {
         selectorChecked: this.$router.params.repeat,
         inputValue: this.$router.params.title,
         value: this.$router.params.title,
-        top: (this.$router.params.top) === "false" ? false : true
+        top: (this.$router.params.top) === "false" ? false : true,
+        title: '编辑备忘录'
       })
     }
   }
@@ -111,11 +113,12 @@ export default class Created extends Component {
           top: this.state.top,
           day: this.state.day,
           openid: this.state.openid,
-          _id: this.$router.params._id
+          _id: this.$router.params._id,
+          _id1: this.$router.params._id1
         }
         Taro.request({
-          url: 'https://lee.hhp.im/updateNote',
-          // url: 'http://localhost:3000/updateNote',
+          // url: 'https://lee.hhp.im/updateNote',
+          url: 'http://localhost:3000/updateNote',
           method: 'POST',
           data: note
         }).then(res => {
@@ -143,7 +146,8 @@ export default class Created extends Component {
           openid: this.state.openid
         }
         Taro.request({
-          url: 'https://lee.hhp.im/addNote',
+          // url: 'https://lee.hhp.im/addNote',
+          url: 'http://localhost:3000/addNote',
           method: 'POST',
           data: note
         }).then(res => {
@@ -213,7 +217,7 @@ export default class Created extends Component {
 
         {/* 备忘录具体内容 */}
         <View className='titleBox'>
-          <Text className='title'>创建新备忘录</Text>
+          <Text className='title'>{this.state.title}</Text>
           <Button className='saveBtn' onClick={this.save}>保存</Button>
         </View>
 

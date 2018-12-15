@@ -46,8 +46,8 @@ export default class Index extends Component {
             url: 'https://api.weixin.qq.com/sns/jscode2session?appid=' + appId + '&secret=' + secret + '&js_code=' + code + '&grant_type=authorization_code'
           }).then(result => {
             Taro.request({
-              url: 'https://lee.hhp.im/getOpenId',
-              // url: 'http://localhost:3000/getOpenId',
+              // url: 'https://lee.hhp.im/getOpenId',
+              url: 'http://localhost:3000/getOpenId',
               method: 'POST',
               data: {
                 openid: result.data.openid,
@@ -78,8 +78,8 @@ export default class Index extends Component {
   getNotes() {
     // 根据获取的openid获取用户备忘录
     Taro.request({
-      url: 'https://lee.hhp.im/getNote',
-      // url: 'http://localhost:3000/getNote',
+      // url: 'https://lee.hhp.im/getNote',
+      url: 'http://localhost:3000/getNote',
       method: 'POST',
       data: {
         openid: this.state.openid
@@ -115,7 +115,7 @@ export default class Index extends Component {
         }
       }
       others.sort(this.compare('day'))
-      othersDone.reverse(this.compare('day'))
+      othersDone.sort(this.compare('day')).reverse()
       this.setState({
         otherNotes: others,
         otherNotesDone: othersDone
@@ -144,7 +144,8 @@ export default class Index extends Component {
       success: function (res) {
         // 存储获取的用户信息
         Taro.request({
-          url: 'https://lee.hhp.im/getUserInfo',
+          // url: 'https://lee.hhp.im/getUserInfo',
+          url: 'http://localhost:3000/getUserInfo',
           method: 'POST',
           data: {
             openid: that.state.openid,
@@ -170,9 +171,24 @@ export default class Index extends Component {
     var repeat = note.repeat
     var top = note.top
     var _id = note._id
+    var _id1
+    if (this.state.otherNotes.length !== 0) {
+      _id1 = this.state.otherNotes[0]._id
+    }
+    if (this.state.otherNotes.length === 0 && this.state.otherNotesDone.length !== 0) {
+      _id1 = this.state.otherNotesDone[0]._id
+    }
+    if (this.state.otherNotes.length === 0 && this.state.otherNotesDone.length === 0) {
+      _id1 = 0
+    }
     Taro.navigateTo({
-      url: '/pages/noteDetail/noteDetail?date=' + date + '&title=' + title + '&day=' + day + '&repeat=' + repeat + '&top=' + top + '&_id=' + _id
+      url: '/pages/noteDetail/noteDetail?date=' + date + '&title=' + title + '&day=' + day + '&repeat=' + repeat + '&top=' + top + '&_id=' + _id + '&_id1=' + _id1
     })
+  }
+
+  // 重复
+  changeRepeat() {
+    
   }
 
   render() {
@@ -266,12 +282,6 @@ export default class Index extends Component {
         <View className='icons'>
           <View className='iconsItem' onClick={this.toCreated}>
             <AtIcon className='icon' prefixClass='icon' value='add' size='20' color='#4e3a4b'></AtIcon>
-          </View>
-          <View className='iconsItem'>
-            <AtIcon className='icon' prefixClass='icon' value='setting' size='22' color='#4e3a4b'></AtIcon>
-          </View>
-          <View className='iconsItem'>
-            <AtIcon className='icon' prefixClass='icon' value='time' size='22' color='#4e3a4b'></AtIcon>
           </View>
         </View>
 

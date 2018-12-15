@@ -68,9 +68,10 @@ export default class noteDetail extends Component {
     var repeat = this.state.note.repeat
     var top = this.state.note.top
     var _id = this.state.note._id
+    var _id1 = this.state.note._id1
     var update = 'update'
     Taro.navigateTo({
-      url: '/pages/created/created?date=' + date + '&title=' + title + '&day=' + day + '&repeat=' + repeat + '&top=' + top + '&_id=' + _id + '&update=' + update
+      url: '/pages/created/created?date=' + date + '&title=' + title + '&day=' + day + '&repeat=' + repeat + '&top=' + top + '&_id=' + _id + '&_id1=' + _id1 + '&update=' + update
     })
   }
 
@@ -94,12 +95,14 @@ export default class noteDetail extends Component {
         console.log(res.confirm, res.cancel)
         if (res.confirm === true) {
           Taro.request({
-            url: 'https://lee.hhp.im/deleteNote',
+            // url: 'https://lee.hhp.im/deleteNote',
+            url: 'http://localhost:3000/deleteNote',
             method: 'POST',
             data: {
               openid: this.state.openid,
               _id: this.state.note._id,
-              top: this.state.note.top
+              top: this.state.note.top,
+              _id1: this.state.note._id1
             }
           })
           Taro.redirectTo({
